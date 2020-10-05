@@ -1,0 +1,8 @@
+{
+    "nomenclature": {
+        "name": "pseudoc_framework",
+        "verboseName": "Pseudoc framework"
+    },
+    "baseUrl": "/pseudoc_framework",
+    "source": "pseudoc_framework/src/index"
+}
