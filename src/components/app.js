@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Scrollbars } from 'react-custom-scrollbars'
 import { Segment, Container } from 'semantic-ui-react'
+import { Route, withRouter } from 'react-router-dom'
 
 import { AppHeader, AppFooter, AppMain, getTheme } from 'formula_one'
 
@@ -11,6 +12,7 @@ import blocks from '../css/app.css'
 
 class App extends Component {
   render () {
+    const history = this.props.history
     const creators = [
       {
         name: 'Dhruv Bhanushali',
@@ -29,34 +31,8 @@ class App extends Component {
         <AppHeader appName='pseudoc_framework' mode='app' userDropdown/>
         <AppMain>
           <div styleName='main.app-main'>
-            <SideNav/>
+            <SideNav history = {history}/>
             <Scrollbars autoHide>
-              <Container styleName='blocks.content-div'>
-                <center>
-                  <Segment compact color={getTheme()}>
-                    <center>
-                      <h1>Congratulations!</h1>
-                      <p styleName='blocks.logo'>
-                        <img src='/branding/site/logo.svg' />
-                      </p>
-                      <p>
-                        You have successfully initiated <em>pseudoc_framework</em> and
-                        taken the first step to building your
-                        <strong> Omniport</strong> app.
-                      </p>
-                      <p>
-                        Edit <code>./src/components/app.js</code> and make this
-                        app do magical things. We can't wait to see what you make.
-                      </p>
-                      <p>
-                        Greetings,
-                        <br />
-                        Team Omniport
-                      </p>
-                    </center>
-                  </Segment>
-                </center>
-              </Container>
             </Scrollbars>
           </div>
         </AppMain>
@@ -66,7 +42,7 @@ class App extends Component {
   }
 }
 
-export default connect(
+export default withRouter(connect(
   null,
   null
-)(App)
+)(App))

@@ -22,6 +22,11 @@ class SideNav extends Component{
             })
     }
 
+    handleAppClick = (id) => {
+        const  history  = this.props.history
+        history.push(`/pseudoc_framework/app/${id}`)
+    }
+
     componentDidMount() {
         this.getApps()
     }
@@ -38,9 +43,10 @@ class SideNav extends Component{
                 {this.state.apps ? (
                     this.state.apps.map(app => {
                         return (
-                            <Fragment>
+                            <Fragment key = {app.pk}>
                                 <Menu.Item
                                     name={app.name}
+                                    onClick = {() => this.handleAppClick(app.pk)}
                                 >
                                     {app.name}
                                 </Menu.Item>
