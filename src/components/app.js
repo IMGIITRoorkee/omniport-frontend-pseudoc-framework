@@ -5,6 +5,7 @@ import { Segment, Container } from 'semantic-ui-react'
 
 import { AppHeader, AppFooter, AppMain, getTheme } from 'formula_one'
 
+import SideNav from './sidenav'
 import main from 'formula_one/src/css/app.css'
 import blocks from '../css/app.css'
 
@@ -25,9 +26,10 @@ class App extends Component {
 
     return (
       <div styleName='main.app'>
-        <AppHeader appName='pseudoc_framework' mode='app' />
+        <AppHeader appName='pseudoc_framework' mode='app' userDropdown/>
         <AppMain>
           <div styleName='main.app-main'>
+            <SideNav/>
             <Scrollbars autoHide>
               <Container styleName='blocks.content-div'>
                 <center>
