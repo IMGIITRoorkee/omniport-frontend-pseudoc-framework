@@ -1,7 +1,7 @@
+import React, { Component } from 'react'
 import axios from 'axios'
-import { Grid, GridColumn, Segment } from 'semantic-ui-react';
-import { appsApi } from '../urls';
-const { Component } = require("react");
+import { Grid, GridColumn, Segment, Header } from 'semantic-ui-react';
+import { appDetailApi } from '../urls';
 
 class AppDetails extends Component{
     constructor(props){
@@ -14,7 +14,7 @@ class AppDetails extends Component{
     }
 
     getAppDetails = () => {
-        axios.get(appsApi())// To be updated, still working on Routes
+        axios.get(appDetailApi(this.state.id))// To be updated, still working on Routes
             .then(res => {
                 this.setState({
                     ...this.state,
@@ -29,6 +29,15 @@ class AppDetails extends Component{
 
     componentDidMount(){
         this.getAppDetails()
+    }
+
+    componentDidUpdate = (prevProps) => {
+        if(this.props.match.params.id !== prevProps.match.params.id ) {
+            this.setState(
+                {id: this.props.match.params.id}, 
+                () => this.getAppDetails()
+            )
+        }
     }
 
     render(){

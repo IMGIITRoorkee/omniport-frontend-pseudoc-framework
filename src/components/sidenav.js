@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import axios from 'axios'
 import { Dropdown, Menu, Divider, Icon, Image } from 'semantic-ui-react'
+import { Link } from 'react-router-dom'
 
 import { getTheme } from 'formula_one'
 import { appsApi } from "../urls"
@@ -22,11 +23,6 @@ class SideNav extends Component{
             })
     }
 
-    handleAppClick = (id) => {
-        const  history  = this.props.history
-        history.push(`/pseudoc_framework/app/${id}`)
-    }
-
     componentDidMount() {
         this.getApps()
     }
@@ -46,9 +42,11 @@ class SideNav extends Component{
                             <Fragment key = {app.pk}>
                                 <Menu.Item
                                     name={app.name}
-                                    onClick = {() => this.handleAppClick(app.pk)}
+                                    // onClick = {() => this.handleAppClick(app.pk)}
                                 >
-                                    {app.name}
+                                    <Link to = {`/pseudoc_framework/app/${app.pk}`}>
+                                        {app.name}
+                                    </Link> 
                                 </Menu.Item>
                                 <Divider/>
                             </Fragment>

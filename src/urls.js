@@ -9,3 +9,7 @@ export function urlBaseApi() {
 export function appsApi() {
     return `${urlBaseApi()}/apps/`
 }
+
+export function appDetailApi(id) {
+    return `${appsApi()}${id}/`
+}
