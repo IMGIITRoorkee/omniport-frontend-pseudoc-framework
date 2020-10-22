@@ -1,25 +1,29 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-import { Grid, GridColumn, Segment, Header } from 'semantic-ui-react';
+import { Grid, GridColumn, Segment, Header, Container } from 'semantic-ui-react';
 import { appDetailApi } from '../urls';
+import AppQuery from './appQuery';
 
 class AppDetails extends Component{
     constructor(props){
         super(props)
         this.state = {
             id : this.props.match.params.id,
-            app_name: '',
-            app_description: ''
+            app_name: null,
+            app_description: null,
+            app_queries: null,
         }
     }
 
     getAppDetails = () => {
-        axios.get(appDetailApi(this.state.id))// To be updated, still working on Routes
+        axios.get(appDetailApi(this.state.id))
             .then(res => {
+                console.log(res)
                 this.setState({
                     ...this.state,
                     app_name: res.data.name,
                     app_description: res.data.shortDescription,
+                    app_queries: res.data.queries,
                 })
             })
             .catch(err => {
@@ -41,32 +45,43 @@ class AppDetails extends Component{
     }
 
     render(){
+        const queries = this.state.app_queries;
+        console.log(this.state.app_queries)
         return(
-            <React.Fragment>
-                <Segment attached='top'>
+            <Container>
+                <Segment vertical>
                     <Header as='h2'>App Details</Header>
                 </Segment>
-                <Segment attached='bottom'>
+                <Segment vertical>
                     <Grid stackable>
                         <Grid.Row>
-                            <Grid.Column as='h2' width={3}>
-                                App Name
+                            <Grid.Column as='h3' width={4}>
+                                App Name:
                             </Grid.Column>
-                            <GridColumn width={5}>
+                            <GridColumn width={5} as = 'h3'>
                                 {this.state.app_name}
                             </GridColumn>
                         </Grid.Row>
                         <Grid.Row>
-                            <Grid.Column as='h3' width={3}>
-                                App Description
+                            <Grid.Column as='h3' width={4}>
+                                App Description:
                             </Grid.Column>
-                            <GridColumn width={5}>
+                            <GridColumn width={5} as ='h3'>
                                 {this.state.app_description}
                             </GridColumn>
                         </Grid.Row>
                     </Grid>
                 </Segment>
-            </React.Fragment>
+                <Container>
+                {this.state.app_queries ? (
+                    this.state.app_queries.map(query => {
+                    return(
+                    <AppQuery pk = {query.pk}/>
+                    )
+                })
+                ) : null}
+                </Container>
+            </Container>
         )
     }
 }

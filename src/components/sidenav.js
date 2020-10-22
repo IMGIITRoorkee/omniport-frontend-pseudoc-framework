@@ -42,6 +42,7 @@ class SideNav extends Component{
                             <Fragment key = {app.pk}>
                                 <Menu.Item
                                     name={app.name}
+                                    as='h4'
                                     // onClick = {() => this.handleAppClick(app.pk)}
                                 >
                                     <Link to = {`/pseudoc_framework/app/${app.pk}`}>

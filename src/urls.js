@@ -13,3 +13,7 @@ export function appsApi() {
 export function appDetailApi(id) {
     return `${appsApi()}${id}/`
 }
+
+export function queryDetailApi(id) {
+    return `${urlBaseApi()}/query/${id}/`
+}
