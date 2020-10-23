@@ -11,13 +11,15 @@ import {
   } from 'semantic-ui-react' 
 import InputField from './input-field'
 import { queryDetailApi } from '../urls';
+import { getTheme, getCookie } from 'formula_one'
 
 export class QueryDetail extends React.Component {
     constructor (props) {
         super(props)
         this.state = {
             id: this.props.id,
-            error: false
+            error: false,
+            data: {}
         }
     }
 
@@ -37,7 +39,24 @@ export class QueryDetail extends React.Component {
 
     handleChange = (name, value) => {
         this.setState({
-          [name]: value
+          data: {
+              ...this.state.data,
+              [name]: value
+          }
+        })
+    }
+
+    handleSubmit = () => {
+        console.log(this.state.data)
+        let headers = {
+            'X-CSRFToken': getCookie('csrftoken')
+          }
+        axios.post(this.state.query.api, this.state.data, { headers: headers })
+        .then(res => {
+            console.log(res)
+        })
+        .catch(err => {
+            console.log(err)
         })
     }
 
@@ -59,6 +78,17 @@ export class QueryDetail extends React.Component {
                             }
                         )
                     ) : null}
+                    <Grid.Row as={Form.Field}>
+                        <Grid.Column width={4} verticalAlign='middle'>
+                            <Button
+                                color={getTheme()}
+                                onClick={this.handleSubmit}
+                                basic
+                                icon='check'
+                                content='Submit'
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
                 </Grid>
             </Form>
         )

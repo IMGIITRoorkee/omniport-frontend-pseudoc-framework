@@ -20,7 +20,6 @@ class AppDetails extends Component{
             .then(res => {
                 console.log(res)
                 this.setState({
-                    ...this.state,
                     app_name: res.data.name,
                     app_description: res.data.shortDescription,
                     app_queries: res.data.queries,
@@ -45,7 +44,6 @@ class AppDetails extends Component{
     }
 
     render(){
-        const queries = this.state.app_queries;
         console.log(this.state.app_queries)
         return(
             <Container>
@@ -76,7 +74,12 @@ class AppDetails extends Component{
                 {this.state.app_queries ? (
                     this.state.app_queries.map(query => {
                     return(
-                    <AppQuery pk = {query.pk}/>
+                    <AppQuery 
+                        key = {query.pk}
+                        pk = {query.pk}
+                        label = {query.label}
+                        shortDescription = {query.shortDescription}
+                    />
                     )
                 })
                 ) : null}

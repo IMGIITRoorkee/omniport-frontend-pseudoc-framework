@@ -10,25 +10,12 @@ class AppQuery extends Component{
         super(props)
         this.state = {
             query_pk: this.props.pk,
-            query_label: null,
-            query_shortDescription: null,
+            query_label: this.props.label,
+            query_shortDescription: this.props.shortDescription,
             field_animation: 'drop',
             field_duration: 500,
             field_visible: false,
         }
-    }
-    getQueryDetails = () => {
-        axios.get(queryDetailApi(this.state.query_pk))
-            .then(res => {
-                console.log(res)
-                this.setState({
-                    query_label: res.data.label,
-                    query_shortDescription: res.data.shortDescription,
-                })
-            })
-            .catch(err => {
-                console.log(err)
-            })
     }
 
     handleVisibility = () => {
@@ -37,8 +24,17 @@ class AppQuery extends Component{
         }))
     }
 
-    componentDidMount(){
-        this.getQueryDetails()
+    componentDidUpdate = (prevProps) => {
+        if(this.props !== prevProps ) {
+            this.setState(
+                {
+                    query_pk: this.props.pk,
+                    query_label: this.props.label,
+                    query_shortDescription: this.props.shortDescription,
+                    field_visible: false
+                }
+            )
+        }
     }
 
     render(){
