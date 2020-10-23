@@ -8,9 +8,9 @@ import {
     Button,
     Placeholder,
     Message
-  } from 'semantic-ui-react'
-
+  } from 'semantic-ui-react' 
 import InputField from './input-field'
+import { queryDetailApi } from '../urls';
 
 export class QueryDetail extends React.Component {
     constructor (props) {
@@ -22,7 +22,7 @@ export class QueryDetail extends React.Component {
     }
 
     getQuery = () => {
-        axios.get(`/api/pseudoc_framework/query/${this.state.id}/`)
+        axios.get(queryDetailApi(this.state.id))
         .then( res => {
             this.setState({ query : res.data})
         })
