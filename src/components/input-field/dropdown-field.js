@@ -5,7 +5,7 @@ import Field from './field'
 
 export default class DropdownField extends React.PureComponent {
     render () {
-        const { handleChange, error = {error}} = this.props
+        const { handleChange, value, error = {error}} = this.props
         const { name, displayName, fieldAttribute, required, } = this.props.field
       return (
         <Field
@@ -22,6 +22,7 @@ export default class DropdownField extends React.PureComponent {
                   }
               })}
               onChange={(e, { name, value }) => handleChange(name, value)}
+              value={value? value:''}
               selection
               search
               fluid

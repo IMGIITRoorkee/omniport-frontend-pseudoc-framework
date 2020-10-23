@@ -6,7 +6,7 @@ import DropdownField from './dropdown-field'
 
 export default class InputField extends React.PureComponent {
     renderField = () => {
-      const { field, handleChange, error } = this.props
+      const { field, handleChange, error, value } = this.props
       const type = field.fieldAttribute.type
 
         switch (type) { 
@@ -16,6 +16,7 @@ export default class InputField extends React.PureComponent {
                         field={field}
                         handleChange={handleChange}
                         error={error}
+                        value={value}
                     />
                 )
             
@@ -25,6 +26,7 @@ export default class InputField extends React.PureComponent {
                         field={field}
                         handleChange={handleChange}
                         error={error}
+                        value={value}
                   />
                 )
 
@@ -34,6 +36,7 @@ export default class InputField extends React.PureComponent {
                         field={field}
                         handleChange={handleChange}
                         error={error}
+                        value={value}
                     />
                 )
 
@@ -44,6 +47,7 @@ export default class InputField extends React.PureComponent {
                     field={field}
                     handleChange={handleChange}
                     error={error}
+                    value={value}
                     />
                 )
         }

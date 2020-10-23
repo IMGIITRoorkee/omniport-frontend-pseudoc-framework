@@ -46,6 +46,13 @@ export class QueryDetail extends React.Component {
         })
     }
 
+    // TODO: Modify handleReset to reset dropdowns too
+    handleReset = () => {
+        this.setState({
+          data: {}
+        });
+      };
+
     handleSubmit = () => {
         console.log(this.state.data)
         let headers = {
@@ -54,6 +61,7 @@ export class QueryDetail extends React.Component {
         axios.post(this.state.query.api, this.state.data, { headers: headers })
         .then(res => {
             console.log(res)
+            this.handleReset()
         })
         .catch(err => {
             console.log(err)
@@ -73,6 +81,7 @@ export class QueryDetail extends React.Component {
                                         field={field}
                                         handleChange={this.handleChange}
                                         error={false}
+                                        value={this.state.data[field.name]}
                                     />
                                 )
                             }

@@ -5,7 +5,7 @@ import Field from './field'
 
 export default class NumericField extends React.PureComponent {
   render () {
-    const { handleChange, error = {error}} = this.props
+    const { handleChange, value, error = {error}} = this.props
     const { name, displayName, fieldAttribute, required, } = this.props.field
     const { max, min } = fieldAttribute
     return (
@@ -16,6 +16,7 @@ export default class NumericField extends React.PureComponent {
             id={name}
             name={name}
             placeholder={displayName}
+            value={value? value:''}
             maxvalue={max}
             minvalue={min}
             onChange={(e, { name, value }) => handleChange(name, value)}
