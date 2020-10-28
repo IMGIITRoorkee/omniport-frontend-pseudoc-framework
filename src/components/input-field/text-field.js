@@ -5,8 +5,8 @@ import Field from './field'
 
 export default class TextField extends React.PureComponent {
   render () {
-    const { handleChange, value, error = {error}} = this.props
-    const { name, displayName, fieldAttribute, required, } = this.props.field
+    const { handleChange, value, error = { error } } = this.props
+    const { name, displayName, fieldAttribute, required } = this.props.field
     const { maxLength } = fieldAttribute.maxLength
     return (
       <Field
@@ -15,7 +15,7 @@ export default class TextField extends React.PureComponent {
             id={name}
             name={name}
             placeholder={displayName}
-            value={value? value:''}
+            value={value ? value : ''}
             maxLength={maxLength}
             onChange={(e, { name, value }) => handleChange(name, value)}
           />

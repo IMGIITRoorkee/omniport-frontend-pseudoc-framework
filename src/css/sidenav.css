@@ -1,0 +1,36 @@
+.sidenav-menu {
+    padding-top: 10px !important;
+    margin-left: 0px !important;
+    width: 16em !important;
+    height: 100%;
+  }
+  
+  .sidenav-items {
+    color: rgba(255, 255, 255, 1) !important;
+    flex-grow: 1 !important;
+  }
+  
+  .sidenav-divider {
+    background: white;
+    opacity: 0.4;
+  }
+  
+  .sidenav-active-item {
+    background: rgba(255, 255, 255, 0.2) !important;
+  }
+  
+  .app-sidebar-main {
+    position: relative;
+  }
+  .app-sidebar-wrapper {
+    position: absolute !important;
+    top: 0 !important;
+    width: 100vw !important;
+    box-shadow: none !important;
+  }
+  
+  @media only screen and (max-width: 768px) {
+    .sidenav-menu {
+      width: 14em !important;
+    }
+  }
