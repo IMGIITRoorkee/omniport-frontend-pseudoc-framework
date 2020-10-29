@@ -74,7 +74,6 @@ class SideNav extends Component {
                   >
                     {app.name}
                   </Menu.Item>
-                  <Divider styleName='sidenav.sidenav-divider' />
                 </Fragment>
               )
             })

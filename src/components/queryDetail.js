@@ -20,6 +20,7 @@ export class QueryDetail extends React.Component {
     this.state = {
       id: this.props.id,
       error: false,
+      error_msgs: [],
       data: {},
       isLoading: true,
       submitDisabled: false,
@@ -61,30 +62,60 @@ export class QueryDetail extends React.Component {
     })
   }
 
-  handleSubmit = () => {
-    this.setState({
-      submitDisabled: true
+  validateData = data => {
+    const fields = this.state.query.fieldList
+    const required = fields.filter(field => {
+      return field.required
     })
-    console.log(this.state.data)
-    let headers = {
-      'X-CSRFToken': getCookie('csrftoken')
+    let isValid = true
+    for (let field of required) {
+      console.log(field)
+      if (!data[field.name]) {
+        isValid = false
+        this.state.error_msgs = [
+          ...this.state.error_msgs,
+          `${field.displayName}: This field is required.`
+        ]
+      }
     }
-    axios
-      .post(this.state.query.api, this.state.data, { headers: headers })
-      .then(res => {
-        console.log(res)
-        this.props.onSubmit();
-        this.handleReset()
-      })
-      .catch(err => {
-        console.log(err)
-      })
+    return isValid
+  }
+
+  handleSubmit = () => {
+    this.setState({ error: false, error_msgs: [], submitDisabled: true }, () => {
+      const isValid = this.validateData(this.state.data)
+      if (isValid) {
+        let headers = {
+          'X-CSRFToken': getCookie('csrftoken')
+        }
+        axios
+          .post(this.state.query.api, this.state.data, { headers: headers })
+          .then(res => {
+            console.log(res)
+            this.props.onSubmit();
+            this.handleReset()
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      } else {
+        this.setState({
+          error: true
+        })
+      }
+    })
   }
 
   render () {
     const isLoading = this.state.isLoading
+    const error = this.state.error
+    const error_msgs = this.state.error_msgs
     return (
-      <Form>
+      <Form error={error}>
+        <Message error>
+          <Message.Header>Error</Message.Header>
+          <Message.List items={error_msgs} />
+        </Message>
         {isLoading ? (
           <Loader active />
         ) : (

@@ -13,7 +13,7 @@ import blocks from '../css/app.css'
 
 class App extends Component {
   render () {
-    const {history} = this.props
+    const { history } = this.props
     const creators = [
       {
         name: 'Dhruv Bhanushali',
@@ -29,10 +29,10 @@ class App extends Component {
 
     return (
       <div styleName='main.app'>
-        <AppHeader appName='pseudoc_framework' mode='app' userDropdown/>
+        <AppHeader appName='pseudoc_framework' mode='app' userDropdown />
         <AppMain>
           <div styleName='main.app-main'>
-            <SideNav history = {history}/>
+            <SideNav history={history} />
             <Scrollbars autoHide>
               <Route
                 exact
@@ -48,7 +48,4 @@ class App extends Component {
   }
 }
 
-export default connect(
-  null,
-  null
-)(App)
+export default connect(null, null)(App)
