@@ -21,7 +21,8 @@ export class QueryDetail extends React.Component {
       id: this.props.id,
       error: false,
       data: {},
-      isLoading: true
+      isLoading: true,
+      submitDisabled: false,
     }
   }
 
@@ -61,6 +62,9 @@ export class QueryDetail extends React.Component {
   }
 
   handleSubmit = () => {
+    this.setState({
+      submitDisabled: true
+    })
     console.log(this.state.data)
     let headers = {
       'X-CSRFToken': getCookie('csrftoken')
@@ -69,6 +73,7 @@ export class QueryDetail extends React.Component {
       .post(this.state.query.api, this.state.data, { headers: headers })
       .then(res => {
         console.log(res)
+        this.props.onSubmit();
         this.handleReset()
       })
       .catch(err => {
@@ -105,6 +110,7 @@ export class QueryDetail extends React.Component {
                   basic
                   icon='check'
                   content='Submit'
+                  disabled={this.state.submitDisabled}
                 />
               </Grid.Column>
             </Grid.Row>
