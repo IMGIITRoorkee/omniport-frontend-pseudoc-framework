@@ -7,7 +7,8 @@ import {
   Form,
   Button,
   Placeholder,
-  Message
+  Message,
+  Loader
 } from 'semantic-ui-react'
 import InputField from './input-field'
 import { queryDetailApi } from '../urls'
@@ -19,15 +20,20 @@ export class QueryDetail extends React.Component {
     this.state = {
       id: this.props.id,
       error: false,
-      data: {}
+      data: {},
+      isLoading: true
     }
   }
 
   getQuery = () => {
+    this.setState({ isLoading: true })
     axios
       .get(queryDetailApi(this.state.id))
       .then(res => {
-        this.setState({ query: res.data })
+        this.setState({
+          query: res.data,
+          isLoading: false
+        })
       })
       .catch(err => {
         console.log(err)
@@ -71,34 +77,39 @@ export class QueryDetail extends React.Component {
   }
 
   render () {
+    const isLoading = this.state.isLoading
     return (
       <Form>
-        <Grid stackable>
-          {this.state.query
-            ? this.state.query.fieldList.map((field, index) => {
-                return (
-                  <InputField
-                    key={field.pk}
-                    field={field}
-                    handleChange={this.handleChange}
-                    error={false}
-                    value={this.state.data[field.name]}
-                  />
-                )
-              })
-            : null}
-          <Grid.Row as={Form.Field}>
-            <Grid.Column width={4} verticalAlign='middle'>
-              <Button
-                color={getTheme()}
-                onClick={this.handleSubmit}
-                basic
-                icon='check'
-                content='Submit'
-              />
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
+        {isLoading ? (
+          <Loader active />
+        ) : (
+          <Grid stackable>
+            {this.state.query
+              ? this.state.query.fieldList.map((field, index) => {
+                  return (
+                    <InputField
+                      key={field.pk}
+                      field={field}
+                      handleChange={this.handleChange}
+                      error={false}
+                      value={this.state.data[field.name]}
+                    />
+                  )
+                })
+              : null}
+            <Grid.Row as={Form.Field}>
+              <Grid.Column width={4} verticalAlign='middle'>
+                <Button
+                  color={getTheme()}
+                  onClick={this.handleSubmit}
+                  basic
+                  icon='check'
+                  content='Submit'
+                />
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+        )}
       </Form>
     )
   }

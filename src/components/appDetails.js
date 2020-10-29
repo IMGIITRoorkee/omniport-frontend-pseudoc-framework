@@ -1,6 +1,13 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-import { Grid, GridColumn, Segment, Header, Container } from 'semantic-ui-react'
+import {
+  Grid,
+  GridColumn,
+  Segment,
+  Header,
+  Container,
+  Loader
+} from 'semantic-ui-react'
 import { appDetailApi } from '../urls'
 import AppQuery from './appQuery'
 
@@ -11,11 +18,13 @@ class AppDetails extends Component {
       id: this.props.match.params.id,
       app_name: null,
       app_description: null,
-      app_queries: null
+      app_queries: null,
+      isLoading: true
     }
   }
 
   getAppDetails = () => {
+    this.setState({isLoading: true})
     axios
       .get(appDetailApi(this.state.id))
       .then(res => {
@@ -23,7 +32,8 @@ class AppDetails extends Component {
         this.setState({
           app_name: res.data.name,
           app_description: res.data.shortDescription,
-          app_queries: res.data.queries
+          app_queries: res.data.queries,
+          isLoading: false
         })
       })
       .catch(err => {
@@ -44,29 +54,36 @@ class AppDetails extends Component {
   }
 
   render () {
+    const isLoading = this.state.isLoading
     console.log(this.state.app_queries)
     return (
       <Container>
-        <Segment vertical>
-          <Header as='h2'>{this.state.app_name}</Header>
-        </Segment>
-        <Segment vertical>
-          <Header as='h3'>{this.state.app_description}</Header>
-        </Segment>
-        <Container>
-          {this.state.app_queries
-            ? this.state.app_queries.map(query => {
-                return (
-                  <AppQuery
-                    key={query.pk}
-                    pk={query.pk}
-                    label={query.label}
-                    shortDescription={query.shortDescription}
-                  />
-                )
-              })
-            : null}
-        </Container>
+        {isLoading ? (
+          <Loader active />
+        ) : (
+          <React.Fragment>
+            <Segment vertical>
+              <Header as='h2'>{this.state.app_name}</Header>
+            </Segment>
+            <Segment vertical>
+              <Header as='h3'>{this.state.app_description}</Header>
+            </Segment>
+            <Container>
+              {this.state.app_queries
+                ? this.state.app_queries.map(query => {
+                    return (
+                      <AppQuery
+                        key={query.pk}
+                        pk={query.pk}
+                        label={query.label}
+                        shortDescription={query.shortDescription}
+                      />
+                    )
+                  })
+                : null}
+            </Container>
+          </React.Fragment>
+        )}
       </Container>
     )
   }
