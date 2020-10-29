@@ -23,7 +23,7 @@ export class QueryDetail extends React.Component {
       error_msgs: [],
       data: {},
       isLoading: true,
-      submitDisabled: false,
+      submitDisabled: false
     }
   }
 
@@ -62,48 +62,112 @@ export class QueryDetail extends React.Component {
     })
   }
 
+  validateNumber = (num, field) => {
+    let min = field.fieldAttribute.min
+    let max = field.fieldAttribute.max
+    num = parseInt(num)
+    if (min && max && (num < min || num > max)) {
+      this.setState(prevState => ({
+        error_msgs: [
+          ...prevState.error_msgs,
+          `${field.displayName}: Range should be from ${min} to ${max}.`
+        ]
+      }))
+      return false
+    } else if (min !== null && parseInt(num) < min) {
+      this.setState(prevState => ({
+        error_msgs: [
+          ...prevState.error_msgs,
+          `${field.displayName}: Number should be greater than ${min}.`
+        ]
+      }))
+      return false
+    } else if (max !== null && num > max) {
+      this.setState(prevState => ({
+        error_msgs: [
+          ...prevState.error_msgs,
+          `${field.displayName}: Number should be less than ${max}.`
+        ]
+      }))
+      return false
+    }
+    return true
+  }
+
+  validateText = (text, field) => {
+    let maxLength = field.fieldAttribute.maxLength
+    if (maxLength !== null) {
+      if (text.length > maxLength) {
+        this.setState(prevState => ({
+          error_msgs: [
+            ...prevState.error_msgs,
+            `${field.displayName}: Maximum length cannot be greater than ${maxLength}.`
+          ]
+        }))
+        return false
+      }
+    }
+    return true
+  }
+
   validateData = data => {
     const fields = this.state.query.fieldList
-    const required = fields.filter(field => {
-      return field.required
-    })
     let isValid = true
-    for (let field of required) {
-      console.log(field)
-      if (!data[field.name]) {
-        isValid = false
-        this.state.error_msgs = [
-          ...this.state.error_msgs,
-          `${field.displayName}: This field is required.`
-        ]
+    for (let field of fields) {
+      if (data[field.name]) {
+        switch (field.fieldAttribute.type) {
+          case 'numeric':
+            let isValidNum = this.validateNumber(data[field.name], field)
+            isValid = isValid && isValidNum
+            break
+          case 'text':
+            let isValidText = this.validateText(data[field.name], field)
+            isValid = isValid && isValidText
+            break
+          default:
+            null
+        }
+      } else {
+        if (field.required) {
+          isValid = false
+          this.setState(prevState => ({
+            error_msgs: [
+              ...prevState.error_msgs,
+              `${field.displayName}: This field is required.`
+            ]
+          }))
+        }
       }
     }
     return isValid
   }
 
   handleSubmit = () => {
-    this.setState({ error: false, error_msgs: [], submitDisabled: true }, () => {
-      const isValid = this.validateData(this.state.data)
-      if (isValid) {
-        let headers = {
-          'X-CSRFToken': getCookie('csrftoken')
+    this.setState(
+      { error: false, error_msgs: [], submitDisabled: true },
+      () => {
+        const isValid = this.validateData(this.state.data)
+        if (isValid) {
+          let headers = {
+            'X-CSRFToken': getCookie('csrftoken')
+          }
+          axios
+            .post(this.state.query.api, this.state.data, { headers: headers })
+            .then(res => {
+              console.log(res)
+              this.props.onSubmit()
+              this.handleReset()
+            })
+            .catch(err => {
+              console.log(err)
+            })
+        } else {
+          this.setState({
+            error: true
+          })
         }
-        axios
-          .post(this.state.query.api, this.state.data, { headers: headers })
-          .then(res => {
-            console.log(res)
-            this.props.onSubmit();
-            this.handleReset()
-          })
-          .catch(err => {
-            console.log(err)
-          })
-      } else {
-        this.setState({
-          error: true
-        })
       }
-    })
+    )
   }
 
   render () {

@@ -10,6 +10,7 @@ import {
 } from 'semantic-ui-react'
 import { appDetailApi } from '../urls'
 import AppQuery from './appQuery'
+import app from '../css/app.css'
 
 class AppDetails extends Component {
   constructor (props) {
@@ -57,7 +58,7 @@ class AppDetails extends Component {
     const isLoading = this.state.isLoading
     console.log(this.state.app_queries)
     return (
-      <Container>
+      <Container styleName={'app-detail-container'}>
         {isLoading ? (
           <Loader active />
         ) : (
