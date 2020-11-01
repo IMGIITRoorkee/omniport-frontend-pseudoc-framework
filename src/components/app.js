@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Scrollbars } from 'react-custom-scrollbars'
-import { Segment, Container, Sidebar } from 'semantic-ui-react'
+import { Sidebar } from 'semantic-ui-react'
 import { Route } from 'react-router-dom'
 import { isMobile } from 'react-device-detect'
 
-import { AppHeader, AppFooter, AppMain, getTheme } from 'formula_one'
+import { AppHeader, AppFooter, AppMain } from 'formula_one'
 
 import SideNav from './sidenav'
 import AppDetails from './appDetails'

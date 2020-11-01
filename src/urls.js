@@ -1,19 +1,19 @@
 // Backend URLs
 
-export function urlBaseApi() {
-    return `/api/pseudoc_framework`;
+export function urlBaseApi () {
+  return `/api/pseudoc_framework`
 }
 
 // Get APIs
 
-export function appsApi() {
-    return `${urlBaseApi()}/apps/`
+export function appsApi () {
+  return `${urlBaseApi()}/apps/`
 }
 
-export function appDetailApi(id) {
-    return `${appsApi()}${id}/`
+export function appDetailApi (id) {
+  return `${appsApi()}${id}/`
 }
 
-export function queryDetailApi(id) {
-    return `${urlBaseApi()}/query/${id}/`
+export function queryDetailApi (id) {
+  return `${urlBaseApi()}/query/${id}/`
 }

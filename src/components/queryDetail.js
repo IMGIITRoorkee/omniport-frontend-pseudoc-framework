@@ -1,16 +1,6 @@
 import React from 'react'
 import axios from 'axios'
-import {
-  Segment,
-  Grid,
-  Header,
-  Form,
-  Button,
-  Placeholder,
-  Message,
-  Loader,
-  Icon
-} from 'semantic-ui-react'
+import { Grid, Form, Button, Message, Loader } from 'semantic-ui-react'
 import InputField from './input-field'
 import { queryDetailApi } from '../urls'
 import { getTheme, getCookie } from 'formula_one'
@@ -58,7 +48,6 @@ export class QueryDetail extends React.Component {
     })
   }
 
-  // TODO: Modify handleReset to reset dropdowns too
   handleReset = () => {
     this.setState({
       data: {}
@@ -157,7 +146,6 @@ export class QueryDetail extends React.Component {
           axios
             .post(this.state.query.api, this.state.data, { headers: headers })
             .then(res => {
-              console.log(res)
               this.setState({
                 success_msgs: res.data,
                 success: true

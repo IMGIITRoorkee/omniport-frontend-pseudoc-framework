@@ -1,17 +1,6 @@
 import React, { Component } from 'react'
-import axios from 'axios'
-import { queryDetailApi } from '../urls'
 import { getTheme } from 'formula_one'
-import {
-  Button,
-  Container,
-  Grid,
-  GridColumn,
-  Header,
-  Segment,
-  Transition,
-  Icon
-} from 'semantic-ui-react'
+import { Grid, Header, Segment, Transition, Icon } from 'semantic-ui-react'
 import { QueryDetail } from './queryDetail'
 
 class AppQuery extends Component {

@@ -1,13 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-import {
-  Grid,
-  GridColumn,
-  Segment,
-  Header,
-  Container,
-  Loader
-} from 'semantic-ui-react'
+import { Segment, Header, Container, Loader } from 'semantic-ui-react'
 import { appDetailApi } from '../urls'
 import AppQuery from './appQuery'
 import app from '../css/app.css'
@@ -25,11 +18,10 @@ class AppDetails extends Component {
   }
 
   getAppDetails = () => {
-    this.setState({isLoading: true})
+    this.setState({ isLoading: true })
     axios
       .get(appDetailApi(this.state.id))
       .then(res => {
-        console.log(res)
         this.setState({
           app_name: res.data.name,
           app_description: res.data.shortDescription,
@@ -56,7 +48,6 @@ class AppDetails extends Component {
 
   render () {
     const isLoading = this.state.isLoading
-    console.log(this.state.app_queries)
     return (
       <Container styleName={'app-detail-container'}>
         {isLoading ? (

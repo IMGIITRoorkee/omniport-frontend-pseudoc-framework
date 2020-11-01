@@ -1,8 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import axios from 'axios'
-import { Dropdown, Menu, Divider, Icon, Image } from 'semantic-ui-react'
-import { Link } from 'react-router-dom'
-
+import { Menu } from 'semantic-ui-react'
 import { getTheme } from 'formula_one'
 import { appsApi } from '../urls'
 
