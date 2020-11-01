@@ -63,7 +63,7 @@ class AppQuery extends Component {
           {field_visible && (
             <QueryDetail
               id={this.state.query_pk}
-              onSubmit={this.onSubmitChangeVisibility.bind(this)}
+              onSubmit={this.onSubmitChangeVisibility}
             />
           )}
         </Transition.Group>

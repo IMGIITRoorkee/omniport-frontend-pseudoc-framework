@@ -10,13 +10,13 @@ export class QueryDetail extends React.Component {
     super(props)
     this.state = {
       id: this.props.id,
-      error: false,
-      error_msgs: [],
+      formError: false,
+      error_messages: [],
       data: {},
       isLoading: true,
       submitDisabled: false,
-      success_msgs: [],
-      success: false
+      success_message: '',
+      submitSuccess: false
     }
   }
 
@@ -30,6 +30,7 @@ export class QueryDetail extends React.Component {
           isLoading: false
         })
       })
+      // TODO: Handle error
       .catch(err => {
         console.log(err)
       })
@@ -54,33 +55,27 @@ export class QueryDetail extends React.Component {
     })
   }
 
+  addErrorMessage = message => {
+    this.setState(prevState => ({
+      error_messages: [...prevState.error_messages, message]
+    }))
+  }
+
   validateNumber = (num, field) => {
     let min = field.fieldAttribute.min
     let max = field.fieldAttribute.max
     num = parseInt(num)
     if (min && max && (num < min || num > max)) {
-      this.setState(prevState => ({
-        error_msgs: [
-          ...prevState.error_msgs,
-          `${field.displayName}: Range should be from ${min} to ${max}.`
-        ]
-      }))
+      let error_message = `${field.displayName}: Range should be from ${min} to ${max}.`
+      this.addErrorMessage(error_message)
       return false
     } else if (min !== null && parseInt(num) < min) {
-      this.setState(prevState => ({
-        error_msgs: [
-          ...prevState.error_msgs,
-          `${field.displayName}: Number should be greater than ${min}.`
-        ]
-      }))
+      let error_message = `${field.displayName}: Number should be greater than ${min}.`
+      this.addErrorMessage(error_message)
       return false
     } else if (max !== null && num > max) {
-      this.setState(prevState => ({
-        error_msgs: [
-          ...prevState.error_msgs,
-          `${field.displayName}: Number should be less than ${max}.`
-        ]
-      }))
+      let error_message = `${field.displayName}: Number should be less than ${max}.`
+      this.addErrorMessage(error_message)
       return false
     }
     return true
@@ -90,12 +85,8 @@ export class QueryDetail extends React.Component {
     let maxLength = field.fieldAttribute.maxLength
     if (maxLength !== null) {
       if (text.length > maxLength) {
-        this.setState(prevState => ({
-          error_msgs: [
-            ...prevState.error_msgs,
-            `${field.displayName}: Maximum length cannot be greater than ${maxLength}.`
-          ]
-        }))
+        let error_message = `${field.displayName}: Maximum length cannot be greater than ${maxLength}.`
+        this.addErrorMessage(error_message)
         return false
       }
     }
@@ -122,57 +113,66 @@ export class QueryDetail extends React.Component {
       } else {
         if (field.required) {
           isValid = false
-          this.setState(prevState => ({
-            error_msgs: [
-              ...prevState.error_msgs,
-              `${field.displayName}: This field is required.`
-            ]
-          }))
+          let error_message = `${field.displayName}: This field is required.`
+          this.addErrorMessage(error_message)
         }
       }
     }
     return isValid
   }
 
+  submitForm = () => {
+    let headers = {
+      'X-CSRFToken': getCookie('csrftoken')
+    }
+    axios
+      .post(this.state.query.api, this.state.data, { headers: headers })
+      .then(res => {
+        let default_success_message =
+          'Your query has been submitted successfully'
+        let success_message = res.data.message
+        this.setState({
+          success_message: success_message
+            ? success_message
+            : default_success_message,
+          submitSuccess: true
+        })
+        setTimeout(() => {
+          this.props.onSubmit()
+        }, 2000)
+        this.handleReset()
+      })
+      // TODO: Handle error
+      .catch(err => {
+        this.setState({
+          formError: true
+        })
+        console.log(err)
+      })
+  }
+
   handleSubmit = () => {
     this.setState(
-      { error: false, error_msgs: [], submitDisabled: true },
+      {
+        formError: false,
+        error_messages: [],
+        submitSuccess: false,
+        success_message: '',
+        submitDisabled: true
+      },
       () => {
         const isValid = this.validateData(this.state.data)
         if (isValid) {
-          let headers = {
-            'X-CSRFToken': getCookie('csrftoken')
-          }
-          axios
-            .post(this.state.query.api, this.state.data, { headers: headers })
-            .then(res => {
-              this.setState({
-                success_msgs: res.data,
-                success: true
-              })
-              setTimeout(
-                function () {
-                  this.props.onSubmit()
-                }.bind(this),
-                2000
-              )
-              this.handleReset()
-            })
-            .catch(err => {
-              console.log(err)
-            })
+          this.submitForm()
         } else if (!isValid) {
           this.setState({
-            error: true
+            formError: true
           })
-          setTimeout(
-            function () {
-              this.setState({
-                submitDisabled: false
-              })
-            }.bind(this),
-            2000
-          )
+          setTimeout(() => {
+            this.setState({
+              submitDisabled: false
+            })
+          }, 2000)
         }
       }
     )
@@ -180,20 +180,24 @@ export class QueryDetail extends React.Component {
 
   render () {
     const isLoading = this.state.isLoading
-    const error = this.state.error
-    const success = this.state.success
-    const error_msgs = this.state.error_msgs
-    const success_msgs = this.state.success_msgs
+    const formError = this.state.formError
+    const submitSuccess = this.state.submitSuccess
+    const error_messages = this.state.error_messages
+    const success_message = this.state.success_message
     return (
-      <Form error={error} success={success}>
-        <Message error>
-          <Message.Header>Error</Message.Header>
-          <Message.List items={error_msgs} />
-        </Message>
-        <Message success>
-          <Message.Header>Query Submitted.</Message.Header>
-          <Message.List items={success_msgs} />
-        </Message>
+      <Form error={formError} success={submitSuccess}>
+        <Message
+          error
+          icon='frown outline'
+          header='Error'
+          list={error_messages}
+        />
+        <Message
+          success
+          icon='check'
+          header='Query Submitted'
+          content={success_message}
+        />
         {isLoading ? (
           <Loader active />
         ) : (
