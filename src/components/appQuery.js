@@ -27,7 +27,7 @@ class AppQuery extends Component {
     }
   }
 
-  onSubmitChangeVisibility = () =>{
+  onSubmitChangeVisibility = () => {
     this.setState({
       field_visible: false
     })
@@ -71,7 +71,12 @@ class AppQuery extends Component {
         </Grid>
         <Header as='h4'>Details: {this.state.query_shortDescription}</Header>
         <Transition.Group animation={field_animation} duration={field_duration}>
-          {field_visible && <QueryDetail id={this.state.query_pk} onSubmit={this.onSubmitChangeVisibility.bind(this)}/>}
+          {field_visible && (
+            <QueryDetail
+              id={this.state.query_pk}
+              onSubmit={this.onSubmitChangeVisibility.bind(this)}
+            />
+          )}
         </Transition.Group>
       </Segment>
     )

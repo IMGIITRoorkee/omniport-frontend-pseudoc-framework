@@ -26,7 +26,7 @@ export class QueryDetail extends React.Component {
       isLoading: true,
       submitDisabled: false,
       success_msgs: [],
-      success: false,
+      success: false
     }
   }
 
@@ -160,26 +160,32 @@ export class QueryDetail extends React.Component {
               console.log(res)
               this.setState({
                 success_msgs: res.data,
-                success: true,
+                success: true
               })
-              setTimeout(function(){
-                this.props.onSubmit()
-              }.bind(this), 2000)
+              setTimeout(
+                function () {
+                  this.props.onSubmit()
+                }.bind(this),
+                2000
+              )
               this.handleReset()
             })
             .catch(err => {
               console.log(err)
             })
-        } else if(!isValid){
+        } else if (!isValid) {
           this.setState({
-            error: true,
+            error: true
           })
-          setTimeout(function(){
-            this.setState({
-              submitDisabled: false
-            })
-          }.bind(this), 2000)
-        }      
+          setTimeout(
+            function () {
+              this.setState({
+                submitDisabled: false
+              })
+            }.bind(this),
+            2000
+          )
+        }
       }
     )
   }
@@ -198,7 +204,7 @@ export class QueryDetail extends React.Component {
         </Message>
         <Message success>
           <Message.Header>Query Submitted.</Message.Header>
-          <Message.List items={success_msgs}/>
+          <Message.List items={success_msgs} />
         </Message>
         {isLoading ? (
           <Loader active />
