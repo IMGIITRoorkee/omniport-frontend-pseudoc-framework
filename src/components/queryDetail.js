@@ -8,7 +8,8 @@ import {
   Button,
   Placeholder,
   Message,
-  Loader
+  Loader,
+  Icon
 } from 'semantic-ui-react'
 import InputField from './input-field'
 import { queryDetailApi } from '../urls'
@@ -23,7 +24,9 @@ export class QueryDetail extends React.Component {
       error_msgs: [],
       data: {},
       isLoading: true,
-      submitDisabled: false
+      submitDisabled: false,
+      success_msgs: [],
+      success: false,
     }
   }
 
@@ -155,17 +158,28 @@ export class QueryDetail extends React.Component {
             .post(this.state.query.api, this.state.data, { headers: headers })
             .then(res => {
               console.log(res)
-              this.props.onSubmit()
+              this.setState({
+                success_msgs: res.data,
+                success: true,
+              })
+              setTimeout(function(){
+                this.props.onSubmit()
+              }.bind(this), 2000)
               this.handleReset()
             })
             .catch(err => {
               console.log(err)
             })
-        } else {
+        } else if(!isValid){
           this.setState({
-            error: true
+            error: true,
           })
-        }
+          setTimeout(function(){
+            this.setState({
+              submitDisabled: false
+            })
+          }.bind(this), 2000)
+        }      
       }
     )
   }
@@ -173,12 +187,18 @@ export class QueryDetail extends React.Component {
   render () {
     const isLoading = this.state.isLoading
     const error = this.state.error
+    const success = this.state.success
     const error_msgs = this.state.error_msgs
+    const success_msgs = this.state.success_msgs
     return (
-      <Form error={error}>
+      <Form error={error} success={success}>
         <Message error>
           <Message.Header>Error</Message.Header>
           <Message.List items={error_msgs} />
+        </Message>
+        <Message success>
+          <Message.Header>Query Submitted.</Message.Header>
+          <Message.List items={success_msgs}/>
         </Message>
         {isLoading ? (
           <Loader active />
