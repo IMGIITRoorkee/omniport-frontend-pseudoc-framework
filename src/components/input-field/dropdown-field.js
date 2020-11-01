@@ -22,7 +22,10 @@ export default class DropdownField extends React.PureComponent {
               }
             })}
             onChange={(e, { name, value }) => handleChange(name, value)}
-            value={value ? value : ''}
+            value={
+              value ? value : fieldAttribute.multipleSelectionAllowed ? [] : ''
+            }
+            multiple={fieldAttribute.multipleSelectionAllowed}
             selection
             search
             fluid
