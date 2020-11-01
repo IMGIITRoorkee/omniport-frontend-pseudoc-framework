@@ -3,6 +3,7 @@ import React from 'react'
 import TextField from './text-field'
 import NumericField from './numeric-field'
 import DropdownField from './dropdown-field'
+import DateField from './date-field'
 
 export default class InputField extends React.PureComponent {
   renderField = () => {
@@ -11,6 +12,16 @@ export default class InputField extends React.PureComponent {
 
     switch (type) {
       case 'text':
+        const isDate = field.fieldAttribute.isDate
+        if (isDate)
+          return (
+            <DateField
+              field={field}
+              handleChange={handleChange}
+              error={error}
+              value={value}
+            />
+          )
         return (
           <TextField
             field={field}
