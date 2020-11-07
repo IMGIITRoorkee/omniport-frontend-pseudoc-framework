@@ -4,6 +4,7 @@ import { Grid, Form, Button, Message, Loader } from 'semantic-ui-react'
 import InputField from './input-field'
 import { queryDetailApi } from '../urls'
 import { getTheme, getCookie } from 'formula_one'
+import { toast } from 'react-semantic-toasts'
 
 export class QueryDetail extends React.Component {
   constructor (props) {
@@ -32,6 +33,16 @@ export class QueryDetail extends React.Component {
       })
       // TODO: Handle error
       .catch(err => {
+        this.setState({
+          isLoading: false,
+          error: true,
+          error_msgs: ['Unable to fetch the Query']
+        })
+        toast({
+          type: 'error',
+          title: 'Unable to fetch the Query',
+          description: err.response.status + ' - ' + err.response.statusText
+        })
         console.log(err)
       })
   }

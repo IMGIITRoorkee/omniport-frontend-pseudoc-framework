@@ -1,8 +1,9 @@
 import React, { Component, Fragment } from 'react'
 import axios from 'axios'
-import { Menu } from 'semantic-ui-react'
+import { Icon, Menu } from 'semantic-ui-react'
 import { getTheme } from 'formula_one'
 import { appsApi } from '../urls'
+import { toast } from 'react-semantic-toasts'
 
 import sidenav from '../css/sidenav.css'
 
@@ -18,7 +19,8 @@ class SideNav extends Component {
         : null
     this.state = {
       apps: null,
-      active: active
+      active: active,
+      error: null
     }
   }
 
@@ -31,7 +33,14 @@ class SideNav extends Component {
         })
       })
       .catch(err => {
-        console.log(err)
+        toast({
+          type: 'error',
+          title: 'Failed to fetch the apps',
+          description: err.response.status + ' - ' + err.response.statusText
+        })
+        this.setState({
+          error: 'An Error Occured'
+        })
       })
   }
 
@@ -56,26 +65,38 @@ class SideNav extends Component {
         styleName='sidenav.sidenav-menu'
         color={getTheme()}
       >
-        {this.state.apps
-          ? this.state.apps.map(app => {
-              return (
-                <Fragment key={app.pk}>
-                  <Menu.Item
-                    name={app.name}
-                    styleName={
-                      active === app.pk
-                        ? 'sidenav.sidenav-active-item'
-                        : 'sidenav.sidenav-items'
-                    }
-                    // as='h4'
-                    onClick={() => this.handleAppClick(app.pk)}
-                  >
-                    {app.name}
-                  </Menu.Item>
-                </Fragment>
-              )
-            })
-          : null}
+        {this.state.apps ? (
+          this.state.apps.map(app => {
+            return (
+              <Fragment key={app.pk}>
+                <Menu.Item
+                  name={app.name}
+                  styleName={
+                    active === app.pk
+                      ? 'sidenav.sidenav-active-item'
+                      : 'sidenav.sidenav-items'
+                  }
+                  // as='h4'
+                  onClick={() => this.handleAppClick(app.pk)}
+                >
+                  {app.name}
+                </Menu.Item>
+              </Fragment>
+            )
+          })
+        ) : (
+          <Fragment>
+            <Menu.Item
+              styleName={
+                active === app.pk
+                  ? 'sidenav.sidenav-active-item'
+                  : 'sidenav.sidenav-items'
+              }
+            >
+              {this.state.error}
+            </Menu.Item>
+          </Fragment>
+        )}
       </Menu>
     )
   }

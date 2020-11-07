@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-import { Segment, Header, Container, Loader } from 'semantic-ui-react'
+import { Segment, Header, Container, Loader, Message } from 'semantic-ui-react'
 import { appDetailApi } from '../urls'
 import AppQuery from './appQuery'
+import { toast } from 'react-semantic-toasts'
 import app from '../css/app.css'
 
 class AppDetails extends Component {
@@ -13,7 +14,9 @@ class AppDetails extends Component {
       app_name: null,
       app_description: null,
       app_queries: null,
-      isLoading: true
+      isLoading: true,
+      error: null,
+      errorMessage: null
     }
   }
 
@@ -30,7 +33,17 @@ class AppDetails extends Component {
         })
       })
       .catch(err => {
-        console.log(err)
+        toast({
+          type: 'error',
+          title: 'Unable to fetch App Details',
+          description: err.response.status + ' - ' + err.response.statusText
+        })
+        this.setState({
+          isLoading: false,
+          error: 'Error - Unable to fetch the App Details',
+          errorMessage: err.response.status + ' - ' + err.response.statusText
+        })
+        console.log(err.response)
       })
   }
 
@@ -48,32 +61,46 @@ class AppDetails extends Component {
 
   render () {
     const isLoading = this.state.isLoading
+    const error = this.state.error
     return (
       <Container styleName={'app-detail-container'}>
         {isLoading ? (
           <Loader active />
         ) : (
           <React.Fragment>
-            <Segment vertical>
-              <Header as='h2'>{this.state.app_name}</Header>
-            </Segment>
-            <Segment vertical>
-              <Header as='h3'>{this.state.app_description}</Header>
-            </Segment>
-            <Container>
-              {this.state.app_queries
-                ? this.state.app_queries.map(query => {
-                    return (
-                      <AppQuery
-                        key={query.pk}
-                        pk={query.pk}
-                        label={query.label}
-                        shortDescription={query.shortDescription}
-                      />
-                    )
-                  })
-                : null}
-            </Container>
+            {error ? (
+              <Container>
+                <Segment vertical>
+                  <Message negative>
+                    <Message.Header>{this.state.error}</Message.Header>
+                    <Message.Content>{this.state.errorMessage}</Message.Content>
+                  </Message>
+                </Segment>
+              </Container>
+            ) : (
+              <Container>
+                <Segment vertical>
+                  <Header as='h2'>{this.state.app_name}</Header>
+                </Segment>
+                <Segment vertical>
+                  <Header as='h3'>{this.state.app_description}</Header>
+                </Segment>
+                <Container>
+                  {this.state.app_queries
+                    ? this.state.app_queries.map(query => {
+                        return (
+                          <AppQuery
+                            key={query.pk}
+                            pk={query.pk}
+                            label={query.label}
+                            shortDescription={query.shortDescription}
+                          />
+                        )
+                      })
+                    : null}
+                </Container>
+              </Container>
+            )}
           </React.Fragment>
         )}
       </Container>
