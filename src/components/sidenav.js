@@ -35,7 +35,7 @@ class SideNav extends Component {
       .catch(err => {
         toast({
           type: 'error',
-          title: 'Failed to fetch the apps',
+          title: 'Failed to fetch the apps ',
           description: err.response.status + ' - ' + err.response.statusText
         })
         this.setState({

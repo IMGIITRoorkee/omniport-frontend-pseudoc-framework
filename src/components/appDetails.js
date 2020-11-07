@@ -16,7 +16,7 @@ class AppDetails extends Component {
       app_queries: null,
       isLoading: true,
       error: null,
-      errorMessage: null
+      errorMessage: [],
     }
   }
 
@@ -41,7 +41,7 @@ class AppDetails extends Component {
         this.setState({
           isLoading: false,
           error: 'Error - Unable to fetch the App Details',
-          errorMessage: err.response.status + ' - ' + err.response.statusText
+          errorMessage: [err.response.status + ' - ' + err.response.statusText],
         })
         console.log(err.response)
       })
@@ -70,11 +70,14 @@ class AppDetails extends Component {
           <React.Fragment>
             {error ? (
               <Container>
-                <Segment vertical>
-                  <Message negative>
-                    <Message.Header>{this.state.error}</Message.Header>
-                    <Message.Content>{this.state.errorMessage}</Message.Content>
-                  </Message>
+                <Segment 
+                vertical>
+                  <Message 
+                  error 
+                  icon='frown outline'
+                  header={this.state.error}
+                  list={this.state.errorMessage}
+                  />
                 </Segment>
               </Container>
             ) : (

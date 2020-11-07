@@ -35,8 +35,8 @@ export class QueryDetail extends React.Component {
       .catch(err => {
         this.setState({
           isLoading: false,
-          error: true,
-          error_msgs: ['Unable to fetch the Query']
+          formError: true,
+          error_messages: ['Unable to fetch the Query']
         })
         toast({
           type: 'error',
