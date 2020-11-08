@@ -76,7 +76,7 @@ class AppDetails extends Component {
                   error 
                   icon='frown outline'
                   header={this.state.error}
-                  list={this.state.errorMessage}
+                  content={this.state.errorMessage}
                   />
                 </Segment>
               </Container>

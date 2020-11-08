@@ -1,6 +1,13 @@
 import React from 'react'
 import axios from 'axios'
-import { Grid, Form, Button, Message, Loader } from 'semantic-ui-react'
+import {
+  Grid,
+  Form,
+  Button,
+  Message,
+  Loader,
+  Container
+} from 'semantic-ui-react'
 import InputField from './input-field'
 import { queryDetailApi } from '../urls'
 import { getTheme, getCookie } from 'formula_one'
@@ -17,7 +24,9 @@ export class QueryDetail extends React.Component {
       isLoading: true,
       submitDisabled: false,
       success_message: '',
-      submitSuccess: false
+      submitSuccess: false,
+      error: false,
+      error_description: []
     }
   }
 
@@ -35,8 +44,8 @@ export class QueryDetail extends React.Component {
       .catch(err => {
         this.setState({
           isLoading: false,
-          formError: true,
-          error_messages: ['Unable to fetch the Query']
+          error: true,
+          error_description: ['Unable to fetch the Query']
         })
         toast({
           type: 'error',
@@ -192,55 +201,67 @@ export class QueryDetail extends React.Component {
   render () {
     const isLoading = this.state.isLoading
     const formError = this.state.formError
+    const error = this.state.error
     const submitSuccess = this.state.submitSuccess
     const error_messages = this.state.error_messages
     const success_message = this.state.success_message
     return (
-      <Form error={formError} success={submitSuccess}>
-        <Message
-          error
-          icon='frown outline'
-          header='Error'
-          list={error_messages}
-        />
-        <Message
-          success
-          icon='check'
-          header='Query Submitted'
-          content={success_message}
-        />
-        {isLoading ? (
-          <Loader active />
+      <Container>
+        {error ? (
+          <Message
+            error
+            icon='frown outline'
+            header='Error'
+            content={this.state.error_description}
+          />
         ) : (
-          <Grid stackable>
-            {this.state.query
-              ? this.state.query.fieldList.map((field, index) => {
-                  return (
-                    <InputField
-                      key={field.pk}
-                      field={field}
-                      handleChange={this.handleChange}
-                      error={false}
-                      value={this.state.data[field.name]}
+          <Form error={formError} success={submitSuccess}>
+            <Message
+              error
+              icon='frown outline'
+              header='Error'
+              list={error_messages}
+            />
+            <Message
+              success
+              icon='check'
+              header='Query Submitted'
+              content={success_message}
+            />
+            {isLoading ? (
+              <Loader active />
+            ) : (
+              <Grid stackable>
+                {this.state.query
+                  ? this.state.query.fieldList.map((field, index) => {
+                      return (
+                        <InputField
+                          key={field.pk}
+                          field={field}
+                          handleChange={this.handleChange}
+                          error={false}
+                          value={this.state.data[field.name]}
+                        />
+                      )
+                    })
+                  : null}
+                <Grid.Row as={Form.Field}>
+                  <Grid.Column width={4} verticalAlign='middle'>
+                    <Button
+                      color={getTheme()}
+                      onClick={this.handleSubmit}
+                      basic
+                      icon='check'
+                      content='Submit'
+                      disabled={this.state.submitDisabled}
                     />
-                  )
-                })
-              : null}
-            <Grid.Row as={Form.Field}>
-              <Grid.Column width={4} verticalAlign='middle'>
-                <Button
-                  color={getTheme()}
-                  onClick={this.handleSubmit}
-                  basic
-                  icon='check'
-                  content='Submit'
-                  disabled={this.state.submitDisabled}
-                />
-              </Grid.Column>
-            </Grid.Row>
-          </Grid>
+                  </Grid.Column>
+                </Grid.Row>
+              </Grid>
+            )}
+          </Form>
         )}
-      </Form>
+      </Container>
     )
   }
 }
