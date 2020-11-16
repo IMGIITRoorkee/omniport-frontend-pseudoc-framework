@@ -9,6 +9,7 @@ import { AppHeader, AppFooter, AppMain } from 'formula_one'
 
 import SideNav from './sidenav'
 import AppDetails from './appDetails'
+import HomePage from './homePage'
 import sidenav from '../css/sidenav.css'
 import main from 'formula_one/src/css/app.css'
 import blocks from '../css/app.css'
@@ -68,6 +69,11 @@ class App extends Component {
               <SideNav history={history} />
             )}
             <Scrollbars autoHide>
+              <Route
+                exact
+                path='/pseudoc_framework'
+                component={HomePage}
+              />
               <Route
                 exact
                 path='/pseudoc_framework/app/:id'
