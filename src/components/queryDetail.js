@@ -9,7 +9,7 @@ import {
   Container
 } from 'semantic-ui-react'
 import InputField from './input-field'
-import { queryDetailApi } from '../urls'
+import { queryDetailApi, executeQueryApi } from '../urls'
 import { getTheme, getCookie } from 'formula_one'
 import { toast } from 'react-semantic-toasts'
 
@@ -146,7 +146,7 @@ export class QueryDetail extends React.Component {
       'X-CSRFToken': getCookie('csrftoken')
     }
     axios
-      .post(this.state.query.api, this.state.data, { headers: headers })
+      .post(executeQueryApi(this.state.id), this.state.data, { headers: headers })
       .then(res => {
         let default_success_message =
           'Your query has been submitted successfully'
@@ -224,7 +224,6 @@ export class QueryDetail extends React.Component {
             />
             <Message
               success
-              icon='check'
               header='Query Submitted'
               content={success_message}
             />

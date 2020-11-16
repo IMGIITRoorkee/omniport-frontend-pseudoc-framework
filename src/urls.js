@@ -17,3 +17,7 @@ export function appDetailApi (id) {
 export function queryDetailApi (id) {
   return `${urlBaseApi()}/query/${id}/`
 }
+
+export function executeQueryApi (id) {
+  return `${urlBaseApi()}/execute_query/${id}/`
+}
