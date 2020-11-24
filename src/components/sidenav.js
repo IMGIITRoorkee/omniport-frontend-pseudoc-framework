@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import axios from 'axios'
-import { Icon, Menu } from 'semantic-ui-react'
+import { Menu } from 'semantic-ui-react'
 import { getTheme } from 'formula_one'
 import { appsApi } from '../urls'
 import { toast } from 'react-semantic-toasts'

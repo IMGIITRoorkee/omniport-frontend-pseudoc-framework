@@ -32,15 +32,25 @@ class App extends Component {
     const { history } = this.props
     const creators = [
       {
-        name: 'Dhruv Bhanushali',
+        name: 'Praduman Goyal',
         role: 'Mentor',
-        link: 'https://dhruvkb.github.io/'
+        link: 'https://pradumangoyal.github.io'
       },
       {
-        name: 'Praduman Goyal',
-        role: 'Frontend developer',
-        link: 'https://pradumangoyal.github.io'
-      }
+        name: 'Rishi Ranjan',
+        role: 'Mentor',
+        link: 'https://github.com/rish9101'
+      },
+      {
+        name: 'Mrinal Kumar',
+        role: 'Full Stack Developer',
+        link: 'https://github.com/kmrinal19'
+      },
+      {
+        name: 'Rochak Jain',
+        role: 'Full Stack Developer',
+        link: 'https://github.com/rochakjain361'
+      },
     ]
 
     return (
