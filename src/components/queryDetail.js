@@ -40,7 +40,6 @@ export class QueryDetail extends React.Component {
           isLoading: false
         })
       })
-      // TODO: Handle error
       .catch(err => {
         this.setState({
           isLoading: false,
@@ -52,7 +51,6 @@ export class QueryDetail extends React.Component {
           title: 'Unable to fetch the Query',
           description: err.response.status + ' - ' + err.response.statusText
         })
-        console.log(err)
       })
   }
 
@@ -150,7 +148,7 @@ export class QueryDetail extends React.Component {
       .then(res => {
         let default_success_message =
           'Your query has been submitted successfully'
-        let success_message = res.data.message
+        let success_message = res.data
         this.setState({
           success_message: success_message
             ? success_message
@@ -162,12 +160,15 @@ export class QueryDetail extends React.Component {
         }, 2000)
         this.handleReset()
       })
-      // TODO: Handle error
       .catch(err => {
         this.setState({
           formError: true
         })
-        console.log(err)
+        setTimeout(() => {
+          this.setState({
+            submitDisabled: false
+          })
+        }, 2000)
       })
   }
 

@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import { Container, Header, Segment } from 'semantic-ui-react'
+import app from '../css/app.css'
 
 class HomePage extends Component {
   render () {
     return (
       <div>
-        <Container>
+        <Container styleName={'app-detail-container'}>
           <Segment vertical>
             <Header as='h1'>Welcome to Pseudo C Portal</Header>
           </Segment>

@@ -76,7 +76,6 @@ class SideNav extends Component {
                       ? 'sidenav.sidenav-active-item'
                       : 'sidenav.sidenav-items'
                   }
-                  // as='h4'
                   onClick={() => this.handleAppClick(app.pk)}
                 >
                   {app.name}

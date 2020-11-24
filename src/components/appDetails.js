@@ -43,7 +43,6 @@ class AppDetails extends Component {
           error: 'Error - Unable to fetch the App Details',
           errorMessage: [err.response.status + ' - ' + err.response.statusText],
         })
-        console.log(err.response)
       })
   }
 

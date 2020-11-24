@@ -52,7 +52,6 @@ export default class InputField extends React.PureComponent {
         )
 
       default:
-        // Default no support field
         return (
           <NoField
             field={field}
