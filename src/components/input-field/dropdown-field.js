@@ -18,7 +18,7 @@ export default class DropdownField extends React.PureComponent {
               return {
                 key: choice.value,
                 value: choice.value,
-                text: choice.name
+                text: choice.displayName
               }
             })}
             onChange={(e, { name, value }) => handleChange(name, value)}
