@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Scrollbars } from 'react-custom-scrollbars'
-import { Sidebar } from 'semantic-ui-react'
-import { Route } from 'react-router-dom'
+import { Sidebar, Segment } from 'semantic-ui-react'
+import { Route, Switch } from 'react-router-dom'
 import { isMobile } from 'react-device-detect'
 
-import { AppHeader, AppFooter, AppMain } from 'formula_one'
+import { AppHeader, AppFooter, AppMain, ErrorDart } from 'formula_one'
 
 import SideNav from './sidenav'
 import AppDetails from './appDetails'
@@ -50,7 +50,7 @@ class App extends Component {
         name: 'Rochak Jain',
         role: 'Full Stack Developer',
         link: 'https://github.com/rochakjain361'
-      },
+      }
     ]
 
     return (
@@ -79,16 +79,23 @@ class App extends Component {
               <SideNav history={history} />
             )}
             <Scrollbars autoHide>
-              <Route
-                exact
-                path='/pseudoc_framework'
-                component={HomePage}
-              />
-              <Route
-                exact
-                path='/pseudoc_framework/app/:id'
-                component={AppDetails}
-              />
+              <Switch>
+                <Route exact path='/pseudoc_framework' component={HomePage} />
+                <Route
+                  exact
+                  path='/pseudoc_framework/app/:id'
+                  component={AppDetails}
+                />
+                <Route
+                  render={() => {
+                    return (
+                      <Segment basic styleName='blocks.error-page'>
+                        <ErrorDart />
+                      </Segment>
+                    )
+                  }}
+                />
+              </Switch>
             </Scrollbars>
           </div>
         </AppMain>

@@ -8,7 +8,7 @@ class HomePage extends Component {
       <div>
         <Container styleName={'app-detail-container'}>
           <Segment vertical>
-            <Header as='h1'>Welcome to Pseudo C Portal</Header>
+            <Header as='h1'>Welcome to Pseudoc Portal</Header>
           </Segment>
           <Segment vertical>
               <Container as='h3'>
