@@ -153,22 +153,16 @@ export class QueryDetail extends React.Component {
           success_message: success_message
             ? success_message
             : default_success_message,
-          submitSuccess: true
+          submitSuccess: true,
+          submitDisabled: false
         })
-        setTimeout(() => {
-          this.props.onSubmit()
-        }, 2000)
         this.handleReset()
       })
       .catch(err => {
         this.setState({
-          formError: true
+          formError: true,
+          submitDisabled: false
         })
-        setTimeout(() => {
-          this.setState({
-            submitDisabled: false
-          })
-        }, 2000)
       })
   }
 
@@ -187,13 +181,9 @@ export class QueryDetail extends React.Component {
           this.submitForm()
         } else if (!isValid) {
           this.setState({
-            formError: true
+            formError: true,
+            submitDisabled: false
           })
-          setTimeout(() => {
-            this.setState({
-              submitDisabled: false
-            })
-          }, 2000)
         }
       }
     )

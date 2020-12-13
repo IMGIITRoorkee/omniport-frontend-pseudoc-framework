@@ -16,12 +16,6 @@ class AppQuery extends Component {
     }
   }
 
-  onSubmitChangeVisibility = () => {
-    this.setState({
-      field_visible: false
-    })
-  }
-
   handleVisibility = () => {
     this.setState(prevState => ({
       field_visible: !prevState.field_visible
@@ -63,7 +57,6 @@ class AppQuery extends Component {
           {field_visible && (
             <QueryDetail
               id={this.state.query_pk}
-              onSubmit={this.onSubmitChangeVisibility}
             />
           )}
         </Transition.Group>
