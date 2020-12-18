@@ -115,7 +115,7 @@ export class QueryDetail extends React.Component {
     const fields = this.state.query.fieldList
     let isValid = true
     for (let field of fields) {
-      if (data[field.name]) {
+      if (data[field.name] || data[field.name] === false) {
         switch (field.fieldAttribute.type) {
           case 'numeric':
             let isValidNum = this.validateNumber(data[field.name], field)
@@ -159,9 +159,16 @@ export class QueryDetail extends React.Component {
         this.handleReset()
       })
       .catch(err => {
+        let response = err.response
         this.setState({
           formError: true,
           submitDisabled: false
+        })
+        this.addErrorMessage(response.data)
+        toast({
+          type: 'error',
+          title: response.status + ' - ' + response.statusText,
+          description: response.data
         })
       })
   }

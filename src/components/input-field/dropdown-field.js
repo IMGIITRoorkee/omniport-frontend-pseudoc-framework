@@ -23,7 +23,13 @@ export default class DropdownField extends React.PureComponent {
             })}
             onChange={(e, { name, value }) => handleChange(name, value)}
             value={
-              value ? value : fieldAttribute.multipleSelectionAllowed ? [] : ''
+              value
+                ? value
+                : fieldAttribute.multipleSelectionAllowed
+                ? []
+                : value === false
+                ? value
+                : ''
             }
             multiple={fieldAttribute.multipleSelectionAllowed}
             selection
