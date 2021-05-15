@@ -11,3 +11,19 @@
 .logo img {
   width: 12em;
 }
+
+.app-detail-container{
+  padding: 0 2em;
+}
+
+.error-page {
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+  justify-content: center;
+  margin: auto !important;
+}
+
+.home-page-stepper{
+  padding-top: 25px
+}
